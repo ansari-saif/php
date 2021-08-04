@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>jQuery UI Sortable - Default functionality</title>
+</head>
+
+<body>
+  <table border="1" width="200">
+    <tbody id="sortable">
+      <tr id="1">
+        <td>item 1</td>
+      </tr>
+      <tr id="2">
+        <td>item 2</td>
+      </tr>
+      <tr id="3">
+        <td>item 3</td>
+      </tr>
+      <tr id="4">
+        <td>item 4</td>
+      </tr>
+      <tr id="5">
+        <td>item 5</td>
+      </tr>
+    </tbody>
+  </table>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+  <script>
+    $(function () {
+      // $("#sortable").sortable();
+
+      $("#sortable").sortable({
+        delay: 150,
+        stop: function () {
+          var selectedData = new Array();
+          console.log(selectedData);
+          $('#sortable>tr').each(function () {
+            selectedData.push($(this).attr("id"));
+          });
+          console.log(selectedData);
+          $.ajax({
+            type: "post",
+            url: "<?= adminLInk(); ?>/globals/webservice",
+            data: {
+              position: selectedData,
+              column: "sort_id",
+              table: "table_name"
+            },
+            success: function (data, textStatus, jqXHR) {
+              console.log(data);
+              if (data !== false) {
+
+              } else {
+                alert("Something Wrong Please Try Again");
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              alert("Something Wrong Please Try Again");
+            },
+          });
+        }
+      });
+      //   $( "#sortable" ).disableSelection();
+    });
+  </script>
+  <code>
+  <!-- php code webservice -->
+  if (isset($_POST['position'])) {
+    // $key = array_keys($_GET)[1];
+    // $_GET[$key] ? $active = 0 : $active = 1;
+    // $result = crud($_GET['table'], 'u', [$key => $active], $_GET['id']);
+    // return  $result ? print_r((true)) : print_r((false));
+    $position = $_POST["position"];
+    $column = $_POST["column"];
+    $table = $_POST["table"];
+    foreach ($position as $k => $v) {
+       $result = $config->execute("UPDATE `$table` SET `$column`='" . ($k+1) . "' WHERE `id`='" . $v . "'");
+     }
+    print_r($_POST);
+    if ($result) {
+       print_r(true);
+    }else{
+       print_r(false);
+    }
+ }
+</code>
+</body>
+
+</html>
