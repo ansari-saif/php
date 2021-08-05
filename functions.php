@@ -10,6 +10,7 @@ function in_array_r($needle, $haystack, $strict = false)
 } 
 
 //file upload 
+  $filesArray = ["cv"];
   $dir = "images/";
   foreach ($filesArray as $item) {
     if (isset($_FILES[$item]['name']) && ($_FILES[$item]['name'] != null)) {
