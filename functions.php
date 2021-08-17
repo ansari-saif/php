@@ -47,3 +47,10 @@ function in_array_r($needle, $haystack, $strict = false)
       move_uploaded_file($_FILES[$item]['tmp_name'], ($dir . $_POST[$item]));
     }
   }
+
+
+
+//active
+function active($link) {
+  echo  (basename($_SERVER['PHP_SELF']) == $link) ? 'active' : null;
+}
