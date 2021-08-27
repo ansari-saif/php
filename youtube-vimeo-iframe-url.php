@@ -1,4 +1,4 @@
-
+<?php
 function checkServer($domains = array(), $url)
 {
     foreach ($domains as $domain) {
