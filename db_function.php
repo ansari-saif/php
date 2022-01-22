@@ -19,3 +19,9 @@ function update($conn,  $data, $table,$id)
     $result =  mysqli_query($conn, $s) || die("update Query failed ------------> " . mysqli_error($conn));
     return $result ? true : false;
 }
+function getData($conn,$table, $id = NULL) {
+    $sql = "SELECT * FROM $table".($id ? " WHERE id = $id": "");
+     $result = mysqli_query($conn,$sql);
+     $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+     return $id ? $data[0] : $data;
+}
