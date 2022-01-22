@@ -12,8 +12,6 @@ if (isset($_POST["submit"])) {
         `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1";
-    // $db->execute($create_table)
-    // echo "<pre>".$create_table."</pre>";
     $content = $create_table;
     $name = $table;
     $backup_name = 0;
@@ -40,7 +38,7 @@ if (isset($_POST["submit"])) {
             padding: 5px;
         }
 
-        span {
+        button[type="button"] {
             border: 1px solid black;
             background-color: green;
             user-select: none;
@@ -53,25 +51,30 @@ if (isset($_POST["submit"])) {
 <body>
     <center>
         <div class="container">
-        <h1>SQL Databse Table Generator</h1>
+            <h1>SQL Databse Table Generator</h1>
             <form method="post">
                 <input type="text" name="name" placeholder="Table Name">
                 <div class="form-group">
-                    <input type="text" name="db[]">
-                    <br>
+                   
                 </div>
-                <span onclick="addmore()">Add More</span>
+                <button onclick="addmore()" type="button">Add More</button>
                 <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </center>
     <script>
         function addmore() {
-            var myhtml = '<input type="text" name="db[]"><br>';
+            var myhtml = '<input type="text" class="input" name="db[]"><br>';
             $('.form-group').append(myhtml);
+            $('.input').on('keydown', function(e) {
+                if (e.which == 9) {
+                    addmore()
+                }
+            });
         }
+        addmore();
     </script>
-  
+
 </body>
 
 </html>
