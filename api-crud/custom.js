@@ -22,18 +22,6 @@ async function get(url,id=null) {
     return apiFunction(url, "GET");
 }
 
-const importData = [
-    {
-        name: "Harry Potter",
-        detail: "JK Rowling",
-        comments: ["Nice name", "Epic Story"],
-    },
-    {
-        name: "Harry Potter",
-        detail: "JK Rowling",
-        comments: ["Nice name", "Epic Story"],
-    },
-];
 
 get(url).then(e => {
     for (let i = 0; i < e.length; i++) {
