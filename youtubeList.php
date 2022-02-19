@@ -1,24 +1,38 @@
 <?php
-// googole link
-// https://developers.google.com/youtube/v3/docs/playlistItems/list
-// $url = "https://www.googleapis.com/youtube/v3/search?key={your_key_here}&channelId={channel_id_here}&part=snippet,id&order=date&maxResults=20";
-$url = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDw5G25kLYYyJxm0OmgSRmGZZcvk8iwubM&channelId=UCzW4py36DRUN_izDpJQH9iw&part=id&order=date&maxResults=50";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
-$json = curl_exec($ch);
-if (!$json) {
-    echo curl_error($ch);
+$dir = "images/";
+$filesArray = ["image1", "image2", "image3"];
+
+foreach ($filesArray as $item) {
+    if (isset($_FILES[$item]['name']) && ($_FILES[$item]['name'] != null)) {
+        ($dataArray[$item] =  time() . "-" . $_FILES[$item]['name']);
+        move_uploaded_file($_FILES[$item]['tmp_name'], ($dir . $dataArray[$item]));
+    }
 }
-curl_close($ch);
-$data = json_decode($json);
-$data = $data->items;
-$data = array_column($data, "id");
-$data = array_column($data, "videoId");
+/* foreach ($_FILES as $key => $item) {
+    if (isset($_FILES[$key]['name']) && ($_FILES[$key]['name'] != null)) {
+        ($dataArray[$key] =  time() . "-" . $_FILES[$key]['name']);
+        move_uploaded_file($_FILES[$key]['tmp_name'], ($dir . $dataArray[$key]));
+    }
+}
+ */
 ?>
-<?php foreach ($data as  $item) : ?>
-    <div class="col-md-4">
-        <iframe width="100%" height="270" src="https://www.youtube.com/embed/<?= $item ?>" class="margin-video" frameborder="0" allowfullscreen></iframe>
-    </div>
-<?php endforeach; ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="image1">
+        <input type="file" name="image2">
+        <input type="file" name="image3">
+        <button type="submit">add</button>
+    </form>
+</body>
+
+</html>
