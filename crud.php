@@ -26,6 +26,7 @@ class DB
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
+            echo "<br><h1>Please create database named test</h1>";
         }
 
         if (!$this->conn) {
@@ -40,6 +41,21 @@ class DB
         if ($this->conn) {
             $this->conn = null;
         }
+    }
+
+    public function createTable($table)
+    {
+        $sql = "CREATE TABLE `$table` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) DEFAULT NULL,
+                    `email` varchar(255) DEFAULT NULL,
+                    `phone` varchar(255) DEFAULT NULL,
+                    `message` varchar(255) DEFAULT NULL,
+                    `status` tinyint(4) NOT NULL DEFAULT '1',
+                    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1";
+        $this->execute($sql);
     }
     public function get($id = NULL)
     {
@@ -100,9 +116,11 @@ class DB
         return $response;
     }
 }
-$data = new DB("data");
+
+$table = "data2";
+$data = new DB($table);
 if (isset($_POST) && !empty($_POST)) {
-    $data->save($_POST,$_POST["id"] ?? null);
+    $data->save($_POST, $_POST["id"] ?? null);
 }
 $isEdit = false;
 if (isset($_GET['action']) && !empty($_GET['action'])) {
@@ -118,6 +136,13 @@ if (isset($_GET['action']) && !empty($_GET['action'])) {
             # code...
             break;
     }
+}
+try {
+    $dataVal = $data->get();
+} catch (\Throwable $e) {
+    // print_r($e->getMessage());
+    $data->createTable($table);
+    $dataVal = [];
 }
 ?>
 <!DOCTYPE html>
@@ -150,7 +175,7 @@ if (isset($_GET['action']) && !empty($_GET['action'])) {
             <th>message</th>
             <th>Action</th>
         </tr>
-        <?php foreach ($data->get() as $k => $v) { ?>
+        <?php foreach ($dataVal as $k => $v) { ?>
             <tr>
                 <td><?= $v['name'] ?></td>
                 <td><?= $v['email'] ?></td>
