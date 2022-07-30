@@ -117,7 +117,7 @@ class DB
     }
 }
 
-$table = "data2";
+$table = "data";
 $data = new DB($table);
 if (isset($_POST) && !empty($_POST)) {
     $data->save($_POST, $_POST["id"] ?? null);
