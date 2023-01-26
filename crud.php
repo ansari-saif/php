@@ -3,6 +3,11 @@ class DB
 {
     private $conn;
     public $table;
+    public $host;
+    public $user;
+    public $pass;
+    public $dbname;
+    public $error;
     public function __construct($table)
     {
         $this->connect();
