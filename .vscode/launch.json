@@ -30,7 +30,7 @@
             "request": "launch",
             "port": 9001,
             "pathMappings": {
-                "D:/sw/laragon/www/php": "${workspaceFolder}",
+                "${workspaceFolder}": "${workspaceFolder}",
             }
         },
         {
